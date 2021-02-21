@@ -2,7 +2,7 @@
 Navigate to https://react-coding-challenge-rho.vercel.app/ to view.
 
 To test locally,
-- clone/fork the repository `git clone https://github.com/StreamCo/react-coding-challenge.git`
+- clone/fork the repository `https://github.com/Oluwafayokemi/react-coding-challenge.git`
 - run `npm install` to install dependencies
 - run `npm start` to start development build
     - Navigate to `localhost:8080` on your browser to see the build
