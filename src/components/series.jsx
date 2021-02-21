@@ -3,37 +3,45 @@ import styled from 'styled-components'
 import { Footer } from '../commons/footer'
 import { Header } from '../commons/header'
 import { useEntriesState } from '../../entries.context'
+import { sortValue } from '../util/sortFunction'
 
 export const Series = () => {
   const [series, setSeries] = useState('')
-
+  const [sorted, setSorted] = useState('')
   const state = useEntriesState()
 
   useEffect(() => {
     getSeries()
   }, [state.entries])
 
+  useEffect(() => {
+    if (series && series[0]) {
+      const sortedSeries = sortValue(series, 'title')
+      setSorted(sortedSeries)
+    }
+  }, [series])
+
   const getSeries = async () => {
-    const filterEntry =
-      state?.entries?.filter(entry => {
-        return entry?.releaseYear >= 2010 && entry?.programType === 'series'
-      })
+    const filterEntry = state?.entries?.filter(entry => {
+      return entry?.releaseYear >= 2010 && entry?.programType === 'series'
+    })
     setSeries(filterEntry)
   }
+
   const { loading, error } = state
   const imgTag = 'Poster Art'
   return (
     <Container>
       <Header />
-      {error || !series ? (
+      {error || !sorted ? (
         <div>...Oops something went wrong</div>
       ) : loading ? (
         <div>....loading</div>
       ) : (
         <div className='movie'>
-          {series &&
-            series?.[0] &&
-            series.slice(0, 21).map((movieSeries, index) => {
+          {sorted &&
+            sorted?.[0] &&
+            sorted.slice(0, 21).map((movieSeries, index) => {
               const { images, title } = movieSeries
               const imageFile = `${images?.[imgTag]?.url}`
               return (

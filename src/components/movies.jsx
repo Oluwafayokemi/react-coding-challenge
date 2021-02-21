@@ -3,15 +3,24 @@ import styled from 'styled-components'
 import { Footer } from '../commons/footer'
 import { Header } from '../commons/header'
 import { useEntriesState } from '../../entries.context'
+import { sortValue } from '../util/sortFunction'
 
 export const Movies = () => {
   const [movies, setMovies] = useState('')
+  const [sorted, setSorted] = useState('')
 
   const state = useEntriesState()
 
   useEffect(() => {
     getMovies()
   }, [state?.entries])
+
+  useEffect(() => {
+    if (movies && movies[0]) {
+      const sortedMovies = sortValue(movies, 'title')
+      setSorted(sortedMovies)
+    }
+  }, [movies])
 
   const getMovies = () => {
     const filterMovies = state?.entries?.filter(
@@ -26,14 +35,14 @@ export const Movies = () => {
   return (
     <Container>
       <Header />
-      {error || !movies ? (
+      {error || !sorted ? (
         <div>...Oops something went wrong</div>
       ) : loading ? (
         <div>....loading</div>
       ) : (
         <div className='movie'>
-          {movies?.[0] &&
-            movies?.slice(0, 21).map((movie, index) => {
+          {sorted?.[0] &&
+            sorted?.slice(0, 21).map((movie, index) => {
               const { images, title } = movie
               const imageFile = `${images?.[imgTag]?.url}`
               return (
